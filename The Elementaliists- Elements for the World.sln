@@ -1,6 +1,6 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "The Elementaliists- Elements for the World", "The Elementaliists- Elements for the World.csproj", "{BE4A294A-AD84-41DD-A170-834300D7D8A1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "The Elementaliists- Elements for the World", "The Elementaliists- Elements for the World.csproj", "{750DCA9A-76CA-45F8-8041-11A8FB252611}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,11 +9,11 @@ Global
 	ExportRelease|Any CPU = ExportRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BE4A294A-AD84-41DD-A170-834300D7D8A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BE4A294A-AD84-41DD-A170-834300D7D8A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BE4A294A-AD84-41DD-A170-834300D7D8A1}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
-		{BE4A294A-AD84-41DD-A170-834300D7D8A1}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
-		{BE4A294A-AD84-41DD-A170-834300D7D8A1}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
-		{BE4A294A-AD84-41DD-A170-834300D7D8A1}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{750DCA9A-76CA-45F8-8041-11A8FB252611}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{750DCA9A-76CA-45F8-8041-11A8FB252611}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{750DCA9A-76CA-45F8-8041-11A8FB252611}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{750DCA9A-76CA-45F8-8041-11A8FB252611}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{750DCA9A-76CA-45F8-8041-11A8FB252611}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{750DCA9A-76CA-45F8-8041-11A8FB252611}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
 	EndGlobalSection
 EndGlobal

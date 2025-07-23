@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=4 uid="uid://dub6dahqpemuq"]
+[gd_scene load_steps=43 format=4 uid="uid://dub6dahqpemuq"]
 
 [ext_resource type="Texture2D" uid="uid://b3g3nctkptrxk" path="res://Assets/Tilesets/Assets.png" id="1_wtcfe"]
 [ext_resource type="Texture2D" uid="uid://cojk3beqnf3nc" path="res://Assets/Backgrounds/Background_1.png" id="2_epypp"]
@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://c6ij22y3pkiry" path="res://Assets/Character Sheets/adventurer-Sheet.png" id="4_0hol4"]
 [ext_resource type="Script" uid="uid://cxcr1rfa33ne5" path="res://Scripts/Player.cs" id="4_d21ai"]
 [ext_resource type="Texture2D" uid="uid://kmo8tbdacn1" path="res://Assets/Character Sheets/Character_Sprite_Sheet.png" id="5_kdubu"]
-[ext_resource type="Texture2D" uid="uid://b4axhq6lbaoj" path="res://Assets/Character Sheets/adventurer-Sheet-Left.png" id="6_kdubu"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_0hol4"]
 
@@ -411,30 +410,6 @@ region = Rect2(50, 111, 50, 37)
 atlas = ExtResource("4_0hol4")
 region = Rect2(100, 111, 50, 37)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_d21ai"]
-atlas = ExtResource("6_kdubu")
-region = Rect2(250, 37, 50, 37)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_rj586"]
-atlas = ExtResource("6_kdubu")
-region = Rect2(200, 37, 50, 37)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4d7sh"]
-atlas = ExtResource("6_kdubu")
-region = Rect2(150, 37, 50, 37)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0h7mo"]
-atlas = ExtResource("6_kdubu")
-region = Rect2(100, 37, 50, 37)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_nr8wp"]
-atlas = ExtResource("6_kdubu")
-region = Rect2(50, 37, 50, 37)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_d2bti"]
-atlas = ExtResource("6_kdubu")
-region = Rect2(0, 37, 50, 37)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_ta5nu"]
 atlas = ExtResource("4_0hol4")
 region = Rect2(50, 37, 50, 37)
@@ -462,7 +437,7 @@ region = Rect2(300, 37, 50, 37)
 [sub_resource type="SpriteFrames" id="SpriteFrames_ir8iy"]
 animations = [{
 "frames": [{
-"duration": 1.0,
+"duration": 1.1,
 "texture": SubResource("AtlasTexture_q6r6c")
 }, {
 "duration": 1.0,
@@ -476,7 +451,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle",
-"speed": 5.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -505,30 +480,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"jump",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_d21ai")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_rj586")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_4d7sh")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_0h7mo")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_nr8wp")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_d2bti")
-}],
-"loop": true,
-"name": &"runLeft",
-"speed": 5.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -551,7 +503,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"runRight",
-"speed": 5.0
+"speed": 6.0
 }]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ei405"]
@@ -650,7 +602,7 @@ shape = SubResource("RectangleShape2D_q6r6c")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
 position = Vector2(184, 112)
 sprite_frames = SubResource("SpriteFrames_ir8iy")
-animation = &"jump"
+animation = &"idle"
 
 [node name="enemy" type="RigidBody2D" parent="."]
 position = Vector2(294, 135)

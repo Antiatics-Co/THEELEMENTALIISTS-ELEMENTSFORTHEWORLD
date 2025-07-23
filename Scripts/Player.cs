@@ -3,73 +3,97 @@ using Godot;
 public partial class Player : CharacterBody2D
 {
 
-    [Export]
-    public int Speed { get; set; } = 200;
+
+    //##########################################################
+
 
     [Export]
-    public int JumpSpeed { get; set; } = 200;
-    [Export]
-    public float Gravity { get; set; } = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
+    public int MaxJumps { get; set; } = 1;
 
-    bool isJumping = true;
+    [Export]
+    public float JumpSpeed { get; set; } = 100.0f;
+
+    [Export]
+    public float DoubleJumpSpeed { get; set; } = 75.0f;
+
+    [Export]
+    public float gravity { get; set; } = 100.0f;
+
+    [Export]
+    public int speed { get; set; } = 200;
+
+    //##########################################################
+
+    int jumpCount = 0;
+
+    Vector2 UP = Vector2.Up;
 
     private AnimatedSprite2D move;
+
+    //##########################################################
 
     public override void _Ready()
     {
         move = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
     }
 
-    public Vector2 getInput()
+    public void jumpAnim()
     {
-        // Check for input and set the animation accordingly
-        int inputDirection = 0;
-        int jump = 0;
-        Vector2 vector;
-        if (Input.IsActionPressed("right"))
-        {
-            inputDirection = 1;
-            move.Play("runRight");
-        }
-        else if (Input.IsActionPressed("left"))
-        {
-            inputDirection = -1;
-            move.Play("runLeft");
-        }
-        else if (Input.IsActionPressed("up"))
-        {
-            if (!isJumping)
-            {
-                isJumping = true;
-                jump = -JumpSpeed;
-                move.Play("jump");
-            }
-            else
-            {
-                jump = 0;
-            }
-        }
-        else
-        {
-            inputDirection = 0;
-            move.Play("idle");
-        }
-
-        vector = new Vector2(Speed * inputDirection, jump);
-        // If no input is detected, return a zero vector
-        return (vector);
+        
+        move.Play("jump");
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        Vector2 pos = getInput();
-        
-        if(isJumping)
+        float direction = (Input.GetActionStrength("right") - Input.GetActionStrength("left"));
+        Vector2 vel = Velocity;
+        vel.X = direction * speed;
+        vel.Y += gravity * (float)delta;
+        Velocity = vel;
+
+        bool isFalling = Velocity.Y > 0 && !IsOnFloor();
+        bool isJumping = Input.IsActionJustPressed("up") && IsOnFloor();
+        bool isDoubleJumping = Input.IsActionJustPressed("up") && isFalling;
+        bool isJumpCancelled = Input.IsActionJustReleased("up") && Velocity.Y < 0;
+        bool isIdle = IsOnFloor() && Mathf.IsZeroApprox(vel.X);
+        bool isRunning = !Mathf.IsZeroApprox(vel.X) && IsOnFloor();
+
+        if (isJumping && jumpCount < MaxJumps)
         {
-            pos.Y += Gravity * (float)delta;
-            //move.Play("fall");
+            jumpAnim();
+            move.FlipH = vel.X < 0;
+            vel.Y += -JumpSpeed;
+            jumpCount++;
+            GD.Print("Jumping, jump count: ", jumpCount);
         }
-            Position += pos * (float)delta;
+        else if (isDoubleJumping && jumpCount < MaxJumps)
+        {
+            jumpAnim();
+            vel.Y += -DoubleJumpSpeed;
+            jumpCount++;
+            
+        }
+        else if (isJumpCancelled)
+        {
+            vel.Y = 0;
+            jumpAnim();
+        }
+        else if (isIdle || isRunning)
+        {
+            jumpCount = 0;
+            if (isIdle)
+            {
+                move.Play("idle");
+            }
+            else if (isRunning)
+            {
+                
+                move.Play("runRight");
+                move.FlipH = vel.X < 0;
+            }
+        }
+        Velocity = vel;
+        MoveAndSlide();
 
     }
 }
