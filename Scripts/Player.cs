@@ -2,8 +2,6 @@ using Godot;
 
 public partial class Player : CharacterBody2D
 {
-
-
     //##########################################################
 
 
@@ -43,12 +41,16 @@ public partial class Player : CharacterBody2D
         move.Play("jump");
     }
 
+    private bool wasOnFloor = false;
+
     public override void _PhysicsProcess(double delta)
     {
         float direction = (Input.GetActionStrength("right") - Input.GetActionStrength("left"));
         Vector2 vel = Velocity;
         vel.X = direction * speed;
-        vel.Y += gravity * (float)delta;
+        if(!IsOnFloor())
+            vel.Y += gravity * (float)delta;
+
         Velocity = vel;
 
         bool isFalling = Velocity.Y > 0 && !IsOnFloor();
@@ -75,10 +77,10 @@ public partial class Player : CharacterBody2D
         }
         else if (isJumpCancelled)
         {
-            vel.Y = 0;
+            vel.Y = vel.Y * 0.75f;
             jumpAnim();
         }
-        else if (isIdle || isRunning)
+        else if (wasOnFloor && IsOnFloor())
         {
             jumpCount = 0;
             if (isIdle)
@@ -92,8 +94,9 @@ public partial class Player : CharacterBody2D
                 move.FlipH = vel.X < 0;
             }
         }
+        wasOnFloor = IsOnFloor();
+
         Velocity = vel;
         MoveAndSlide();
-
     }
 }
