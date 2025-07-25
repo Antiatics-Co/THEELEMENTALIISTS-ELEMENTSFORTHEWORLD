@@ -1,102 +1,53 @@
 using Godot;
+using System;
 
 public partial class Player : CharacterBody2D
 {
-    //##########################################################
+	public const float Speed = 300.0f;
+	public const float JumpVelocity = -400.0f;
 
-
-    [Export]
-    public int MaxJumps { get; set; } = 1;
-
-    [Export]
-    public float JumpSpeed { get; set; } = 100.0f;
-
-    [Export]
-    public float DoubleJumpSpeed { get; set; } = 75.0f;
-
-    [Export]
-    public float gravity { get; set; } = 100.0f;
-
-    [Export]
-    public int speed { get; set; } = 200;
-
-    //##########################################################
-
-    int jumpCount = 0;
-
-    Vector2 UP = Vector2.Up;
-
-    private AnimatedSprite2D move;
-
-    //##########################################################
+	private AnimatedSprite2D spriteAnimation;
 
     public override void _Ready()
-    {
-        move = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+	{
+        spriteAnimation = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
     }
-
-    public void jumpAnim()
-    {
-        
-        move.Play("jump");
-    }
-
-    private bool wasOnFloor = false;
 
     public override void _PhysicsProcess(double delta)
-    {
-        float direction = (Input.GetActionStrength("right") - Input.GetActionStrength("left"));
-        Vector2 vel = Velocity;
-        vel.X = direction * speed;
-        if(!IsOnFloor())
-            vel.Y += gravity * (float)delta;
+	{
+		Vector2 velocity = Velocity;
 
-        Velocity = vel;
+		// Add the gravity.
+		if (!IsOnFloor())
+		{
+			velocity += GetGravity() * (float)delta;
+		}
 
-        bool isFalling = Velocity.Y > 0 && !IsOnFloor();
-        bool isJumping = Input.IsActionJustPressed("up") && IsOnFloor();
-        bool isDoubleJumping = Input.IsActionJustPressed("up") && isFalling;
-        bool isJumpCancelled = Input.IsActionJustReleased("up") && Velocity.Y < 0;
-        bool isIdle = IsOnFloor() && Mathf.IsZeroApprox(vel.X);
-        bool isRunning = !Mathf.IsZeroApprox(vel.X) && IsOnFloor();
+		// Handle Jump.
+		if (Input.IsActionJustPressed("up") && IsOnFloor())
+		{
+            spriteAnimation.Play("jump");
 
-        if (isJumping && jumpCount < MaxJumps)
-        {
-            jumpAnim();
-            move.FlipH = vel.X < 0;
-            vel.Y += -JumpSpeed;
-            jumpCount++;
-            GD.Print("Jumping, jump count: ", jumpCount);
-        }
-        else if (isDoubleJumping && jumpCount < MaxJumps)
-        {
-            jumpAnim();
-            vel.Y += -DoubleJumpSpeed;
-            jumpCount++;
-            
-        }
-        else if (isJumpCancelled)
-        {
-            vel.Y = vel.Y * 0.75f;
-            jumpAnim();
-        }
-        else if (wasOnFloor && IsOnFloor())
-        {
-            jumpCount = 0;
-            if (isIdle)
-            {
-                move.Play("idle");
-            }
-            else if (isRunning)
-            {
-                
-                move.Play("runRight");
-                move.FlipH = vel.X < 0;
-            }
-        }
-        wasOnFloor = IsOnFloor();
+            velocity.Y = JumpVelocity;
+		}
 
-        Velocity = vel;
-        MoveAndSlide();
-    }
+		// Get the input direction and handle the movement/deceleration.
+		Vector2 direction = Input.GetVector("left", "right", "up", "down");
+		if (direction != Vector2.Zero)
+		{
+			spriteAnimation.FlipH = direction.X < 0; // Flip the sprite based on direction
+            if (!spriteAnimation.IsPlaying())//don't play run animation if jump is playing
+				spriteAnimation.Play("run");
+
+            velocity.X = direction.X * Speed;
+		}
+		else
+		{
+            velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
+            spriteAnimation.Play("idle");
+        }
+
+        Velocity = velocity;
+		MoveAndSlide();
+	}
 }
