@@ -41,9 +41,9 @@ public partial class Player : CharacterBody2D
 
             velocity.X = direction.X * Speed;
 		}
-		else
-		{
-            velocity.X = Mathf.MoveToward(Velocity.X, 0, (Speed * 0.01f));
+		else if(IsOnFloor()) // Only decelerate if on the floor and not jumping
+        {
+            velocity.X = Mathf.MoveToward(Velocity.X, 0, (Speed * 0.15f));
             spriteAnimation.Play("idle");
         }
 
