@@ -43,7 +43,7 @@ public partial class Player : CharacterBody2D
 		}
 		else
 		{
-            velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
+            velocity.X = Mathf.MoveToward(Velocity.X, 0, (Speed * 0.01f));
             spriteAnimation.Play("idle");
         }
 
