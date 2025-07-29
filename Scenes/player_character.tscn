@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://vf666glxwwy8"]
+[gd_scene load_steps=30 format=3 uid="uid://vf666glxwwy8"]
 
 [ext_resource type="Script" uid="uid://br3vsd1fe6y1" path="res://Scripts/Player.cs" id="1_2getf"]
 [ext_resource type="Texture2D" uid="uid://brj0ywqbi58lf" path="res://Assets/Character Sheets/Individual Sprites/adventurer-idle-00.png" id="2_cl0yw"]
@@ -21,6 +21,10 @@
 [ext_resource type="Texture2D" uid="uid://c2jocpbiqdlhh" path="res://Assets/Character Sheets/Individual Sprites/adventurer-run-03.png" id="17_nufml"]
 [ext_resource type="Texture2D" uid="uid://cwgdsq6kmo0n6" path="res://Assets/Character Sheets/Individual Sprites/adventurer-run-04.png" id="18_3euba"]
 [ext_resource type="Texture2D" uid="uid://bvhjpt0hgei32" path="res://Assets/Character Sheets/Individual Sprites/adventurer-run-05.png" id="19_nev3s"]
+[ext_resource type="Texture2D" uid="uid://du2ckqywfy05l" path="res://Assets/Character Sheets/Individual Sprites/adventurer-attack1-00.png" id="22_bdrer"]
+[ext_resource type="Texture2D" uid="uid://cqf15r8o5rl37" path="res://Assets/Character Sheets/Individual Sprites/adventurer-attack1-01.png" id="23_w6p7y"]
+[ext_resource type="Texture2D" uid="uid://dgkl74ec7bjwt" path="res://Assets/Character Sheets/Individual Sprites/adventurer-attack1-02.png" id="24_e05f7"]
+[ext_resource type="Texture2D" uid="uid://dpp2ba55imc23" path="res://Assets/Character Sheets/Individual Sprites/adventurer-attack1-03.png" id="25_j5y83"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q6r6c"]
 size = Vector2(32.6923, 29)
@@ -106,10 +110,27 @@ animations = [{
 "loop": true,
 "name": &"run",
 "speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("22_bdrer")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_w6p7y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_e05f7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_j5y83")
+}],
+"loop": true,
+"name": &"slap",
+"speed": 7.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2getf"]
-size = Vector2(11, 10)
+size = Vector2(11, 28)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cl0yw"]
 size = Vector2(20, 8)
@@ -125,17 +146,17 @@ shape = SubResource("RectangleShape2D_q6r6c")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_vcjqu")
-animation = &"fall"
+animation = &"slap"
 autoplay = "idle"
 frame = 1
-frame_progress = 0.512424
+frame_progress = 0.998522
 
 [node name="Area2D" type="Area2D" parent="AnimatedSprite2D"]
 monitoring = false
 
 [node name="SlapHitBox" type="CollisionShape2D" parent="AnimatedSprite2D/Area2D"]
 unique_name_in_owner = true
-position = Vector2(17.5, -7)
+position = Vector2(17.5, 2)
 shape = SubResource("RectangleShape2D_2getf")
 disabled = true
 

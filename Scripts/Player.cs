@@ -9,9 +9,13 @@ public partial class Player : CharacterBody2D
 	private AnimatedSprite2D spriteAnimation;
 	private CollisionShape2D hitBox;
 
+    private bool isAttacking = false;
+    private bool canIdle = true; // Flag to control idle state
+
     public override void _Ready()
 	{
         spriteAnimation = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+        hitBox = GetNode<CollisionShape2D>("%SlapHitBox");
     }
 
     public override void _PhysicsProcess(double delta)
@@ -43,7 +47,7 @@ public partial class Player : CharacterBody2D
 
             velocity.X = direction.X * Speed;
 		}
-		else if(IsOnFloor()) // Only decelerate if on the floor and not jumping
+		else if(IsOnFloor() && canIdle) // Only decelerate if on the floor and not jumping
         {
             velocity.X = Mathf.MoveToward(Velocity.X, 0, (Speed * 0.15f));
             spriteAnimation.Play("idle");
@@ -55,15 +59,17 @@ public partial class Player : CharacterBody2D
 
     public override void _Process(double delta)
     {
-        bool isAttacking = false;
-		String hitBoxName = "AnimatedSprite2D/Area2D/SlapHitBox";
+        
+		String hitBoxName = "%SlapHitBox";
 
         if (Input.IsActionJustPressed("slap"))
 		{
 			isAttacking = true;
+            canIdle = false; // Prevent idle state during attack
+
             hitBoxName = "%SlapHitBox";
             GD.Print("Slap attack initiated");
-            // Play slap animation
+            spriteAnimation.Play("slap");
             //change collsion shape to slap hitbox
             //if enemy is hit apply damage... perhaps add a cool down
         }
@@ -90,13 +96,13 @@ public partial class Player : CharacterBody2D
             GD.Print("Attacking with: " + hitBoxName);
             hitBox = GetNode<CollisionShape2D>(hitBoxName);
 			hitBox.Disabled = false; // Enable the hitbox for the attack
-
+            isAttacking = false; // Reset the attacking state after enabling hitbox
         }
-		else if (spriteAnimation.Frame == 0 || !isAttacking && !hitBox.Disabled)
+		else if (spriteAnimation.Frame == 3 && !isAttacking && !hitBox.Disabled)
 		{
             hitBox = GetNode<CollisionShape2D>(hitBoxName);
-            isAttacking = false;
             hitBox.Disabled = true; // disable the hitbox after the attack
+            canIdle = true; // Allow idle state after attack
         }
     }
 }
